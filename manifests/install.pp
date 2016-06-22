@@ -20,6 +20,7 @@ class foreman::install {
     ensure  => $::foreman::version,
   }
 
+  fail("selinux fact is $::selinux")
   if $::foreman::selinux or (str2bool($::selinux) and $::foreman::selinux != false) {
     package { 'foreman-selinux':
       ensure => $::foreman::version,
