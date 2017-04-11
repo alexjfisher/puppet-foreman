@@ -93,7 +93,12 @@ class foreman::config::passenger(
 
   include ::apache
   include ::apache::mod::headers
-  include ::apache::mod::passenger
+
+  if !defined(Class['apache::mod::passenger']) {
+    class { '::apache::mod::passenger':
+      manage_repo => !$::foreman::custom_repo,
+    }
+  }
 
   if $use_vhost {
     # Check the value in case the interface doesn't exist, otherwise listen on all interfaces
